@@ -8,40 +8,49 @@ from source.get_all_playlist_tracks import get_all_playlist_tracks
 
 def sort_playlist(
     playlist_id: str,
-    sorting: Callable[[tuple[int, str, str, str]], Any],
+    sorting: Callable[[tuple[str, str, str]], Any],
     sp: Spotify,
 ) -> None:
     tracks = get_all_playlist_tracks(playlist_id, sp)
-    track_details: list[tuple[int, str, str, str]] = [
+    track_ids = [item["track"]["id"] for item in tracks]
+    sorted_tracks: list[tuple[str, str, str]] = [
         (
-            i,
             item["track"]["id"],
             item["track"]["name"],
             item["track"]["artists"][0]["name"],
         )
-        for i, item in enumerate(tracks)
+        for item in tracks
     ]
+    sorted_tracks.sort(key=sorting)
 
-    # Sort tracks by name, then artist, then id
-    sorted_tracks = sorted(track_details, key=sorting)
-    new_positions = {i: sorted_tracks[i][0] for i in range(len(sorted_tracks))}
+    if None in track_ids:
+        print("Skipping playlist as it contains local tracks.")
+        return
 
-    print("Reordering playlist...")
-    for new_index, (original_index, _, track_name, track_artist) in enumerate(
-        sorted_tracks
-    ):
-        if original_index != new_index:
-            print(
-                f"Moving track (name={track_name}, artist={track_artist}) "
-                f"from index {original_index} to index {new_index}."
-            )
-            sp.playlist_reorder_items(playlist_id, original_index, new_index)
+    modified = False
+    for j, (track_id, track_name, track_artist) in enumerate(sorted_tracks):
+        if (i := track_ids.index(track_id)) == j:
+            if modified:
+                # If the playlist is already sorted, this will never be printed
+                print(
+                    f"Song {track_name!r} by {track_artist!r} correctly "
+                    f"placed at {i + 1}."
+                )
+            continue
 
-            # After moving a track, all subsequent indices shift by one
-            # Therefore, update the new_positions map
-            new_positions = {
-                k: (v - 1 if v > original_index else v)
-                for k, v in new_positions.items()
-            }
+        if not modified:
+            print("Reordering playlist...")
+            modified = True
 
-    print("Playlist sorted without changing 'Date added'.")
+        print(
+            f"Moving song {track_name!r} by {track_artist!r} from position "
+            f"{i + 1} to position {j + 1}..."
+        )
+        track_ids.pop(i)
+        track_ids.insert(j, track_id)
+        sp.playlist_reorder_items(playlist_id, i, j)
+
+    if modified:
+        print("Playlist sorted without modifying 'Date added'.")
+    else:
+        print("Playlist already sorted.")

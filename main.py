@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 
+from source.playlists import PLAYLISTS
 from source.remove_duplicates import remove_duplicates
 from source.sort_playlist import sort_playlist
 
@@ -15,6 +16,7 @@ def main() -> None:
     scopes = (
         "playlist-modify-private",
         "playlist-modify-public",
+        "playlist-read-collaborative",
         "playlist-read-private",
     )
     auth = SpotifyOAuth(
@@ -24,13 +26,19 @@ def main() -> None:
         scope=" ".join(scopes),
     )
     sp = Spotify(auth_manager=auth)
+    playlists = sp.user_playlists("aleksander2001")["items"]  # type: ignore
 
-    api_playground_id = "4PtF2eIciT6a3y2sLZfDxH"
+    for playlist in playlists:
+        name = playlist["name"]
+        id_ = playlist["id"]
 
-    remove_duplicates(api_playground_id, sp)
-    sort_playlist(
-        api_playground_id, lambda x: (x[2].lower(), x[3].lower(), x[1]), sp
-    )
+        if (sorting := PLAYLISTS.get(name)) is None:
+            print(f"Skipping playlist {name!r} as it has no sorting function.")
+            continue
+
+        print(f"Processing playlist {name!r}...")
+        remove_duplicates(id_, sp)
+        sort_playlist(id_, sorting, sp)
 
 
 if __name__ == "__main__":
