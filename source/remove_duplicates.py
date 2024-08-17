@@ -1,6 +1,6 @@
 from spotipy import Spotify
 
-from source.get_all_playlist_tracks import get_all_playlist_tracks
+from source.fetch_all_items import get_all_playlist_tracks
 
 
 def remove_duplicates(playlist_id: str, sp: Spotify) -> None:
@@ -11,10 +11,8 @@ def remove_duplicates(playlist_id: str, sp: Spotify) -> None:
     duplicate_ids = {
         track_id for track_id in track_ids if track_ids.count(track_id) > 1
     }
+    duplicate_ids.discard(None)
 
-    if None in track_ids:
-        print("Skipping playlist as it contains local tracks.")
-        return
     if not duplicate_ids:
         print("No duplicate songs found.")
         return
@@ -26,7 +24,7 @@ def remove_duplicates(playlist_id: str, sp: Spotify) -> None:
         # and the `positions` parameter. Therefore, it now removes all
         # occurrences and then adds one back
 
-        idx = track_ids.index(track_id)
+        idx = track_ids.index(track_id)  # First occurrence
         uri = tracks[idx]["track"]["uri"]
 
         print(

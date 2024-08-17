@@ -6,7 +6,7 @@ def name_artist_id(x: tuple[str, str, str]) -> tuple[str, str, str]:
     return (x[1].lower(), x[2].lower(), x[0])
 
 
-PLAYLISTS = {
+COMPARATORS = {
     "big pp": name_artist_id,
     "ferrari": name_artist_id,
     "Hvite menn som pusher 50": artist_name_id,

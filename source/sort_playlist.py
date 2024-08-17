@@ -3,7 +3,7 @@ from typing import Any
 
 from spotipy import Spotify
 
-from source.get_all_playlist_tracks import get_all_playlist_tracks
+from source.fetch_all_items import get_all_playlist_tracks
 
 
 def sort_playlist(
@@ -23,6 +23,7 @@ def sort_playlist(
     ]
     sorted_tracks.sort(key=sorting)
 
+    # TODO: Test if this is necessary
     if None in track_ids:
         print("Skipping playlist as it contains local tracks.")
         return

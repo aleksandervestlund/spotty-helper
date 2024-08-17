@@ -1,44 +1,18 @@
-import os
-
-from dotenv import load_dotenv
-from spotipy import Spotify
-from spotipy.oauth2 import SpotifyOAuth
-
-from source.playlists import PLAYLISTS
-from source.remove_duplicates import remove_duplicates
-from source.sort_playlist import sort_playlist
-
-
-load_dotenv()
+from source.comparators import COMPARATORS
+from source.fetch_all_items import get_all_playlists
+from source.get_spotify import get_spotify
+from source.process_playlists import process_playlists
 
 
 def main() -> None:
-    scopes = (
-        "playlist-modify-private",
-        "playlist-modify-public",
-        "playlist-read-collaborative",
-        "playlist-read-private",
-    )
-    auth = SpotifyOAuth(
-        client_id=os.getenv("SPOTIPY_CLIENT_ID"),
-        client_secret=os.getenv("SPOTIPY_CLIENT_SECRET"),
-        redirect_uri=os.getenv("SPOTIPY_REDIRECT_URI"),
-        scope=" ".join(scopes),
-    )
-    sp = Spotify(auth_manager=auth)
-    playlists = sp.user_playlists("aleksander2001")["items"]  # type: ignore
+    sp = get_spotify()
+    playlists = get_all_playlists("aleksander2001", sp)
 
-    for playlist in playlists:
-        name = playlist["name"]
-        id_ = playlist["id"]
+    if comp := set(COMPARATORS) - {playlist["name"] for playlist in playlists}:
+        print(f"These playlists are unknown: {', '.join(comp)}.")
+        return
 
-        if (sorting := PLAYLISTS.get(name)) is None:
-            print(f"Skipping playlist {name!r} as it has no sorting function.")
-            continue
-
-        print(f"Processing playlist {name!r}...")
-        remove_duplicates(id_, sp)
-        sort_playlist(id_, sorting, sp)
+    process_playlists(sp, playlists)
 
 
 if __name__ == "__main__":
