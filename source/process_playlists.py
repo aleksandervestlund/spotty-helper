@@ -10,16 +10,19 @@ from source.sort_playlist import sort_playlist
 
 
 def process_playlists(
-    sp: Spotify, playlists: Sequence[Mapping[str, Any]]
+    playlists: Sequence[Mapping[str, Any]], sp: Spotify
 ) -> None:
     for playlist in playlists:
         name = playlist["name"]
-        id_ = playlist["id"]
-        print(f"Processing playlist {name!r}...")
-        remove_duplicates(id_, sp)
-        # remove_unavailable(id_, sp)
+        playlist_id = playlist["id"]
 
-        if (sorting := COMPARATORS.get(name)) is None:
+        print()
+        print(f"Processing playlist {name!r}...")
+
+        remove_unavailable(playlist_id, sp)
+        remove_duplicates(playlist_id, sp)
+
+        if (comparator := COMPARATORS.get(name)) is None:
             print(f"Not sorting {name!r} as it has no comparator.")
         else:
-            sort_playlist(id_, sorting, sp)
+            sort_playlist(playlist_id, comparator, sp)

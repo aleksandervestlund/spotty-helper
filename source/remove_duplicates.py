@@ -18,6 +18,7 @@ def remove_duplicates(playlist_id: str, sp: Spotify) -> None:
         return
 
     print("Removing duplicate songs...")
+
     for track_id in duplicate_ids:
         # The API kept removing all occurrences of the track, even though the
         # function was using `playlist_remove_specific_occurrences_of_items`

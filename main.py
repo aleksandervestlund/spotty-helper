@@ -10,9 +10,8 @@ def main() -> None:
 
     if comp := set(COMPARATORS) - {playlist["name"] for playlist in playlists}:
         print(f"These playlists are unknown: {', '.join(comp)}.")
-        return
-
-    process_playlists(sp, playlists)
+    else:
+        process_playlists(playlists, sp)
 
 
 if __name__ == "__main__":
