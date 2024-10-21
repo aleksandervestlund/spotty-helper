@@ -43,4 +43,3 @@ def sort_playlist(
         sp.playlist_reorder_items(playlist_id, i, j)
 
     print("Playlist sorted without modifying 'Date added'.")
-    print()
