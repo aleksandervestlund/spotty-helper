@@ -1,9 +1,11 @@
+from collections.abc import Sequence
+
 from spotipy import Spotify
 
 from source.fetch_all_items import get_all_playlist_tracks
 
 
-def chunk_list(lst: list, n: int = 100) -> list[list[str]]:
+def chunk_list(lst: Sequence[str], n: int = 100) -> list[Sequence[str]]:
     return [lst[i : i + n] for i in range(0, len(lst), n)]
     # return itertools.batched(lst, n)  # Python 3.12+
 
