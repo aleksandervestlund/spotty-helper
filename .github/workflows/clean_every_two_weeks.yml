@@ -6,7 +6,7 @@ on:
     - cron: "0 0 */14 * *"
   push:
     branches:
-      - master
+      - main
 
 jobs:
   run_main:
