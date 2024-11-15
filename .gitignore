@@ -1,6 +1,5 @@
 **/__pycache__/*
-.mypy_cache/*
-venv/*
-.cache
-.env
-comparators.py
+**/.mypy_cache/*
+**/venv/*
+**/.cache
+**/.env

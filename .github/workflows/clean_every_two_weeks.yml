@@ -4,6 +4,9 @@ on:
   schedule:
     # Run every two weeks on Monday at 00:00 UTC (01:00 UTC+1)
     - cron: "0 0 */14 * *"
+  push:
+    branches:
+      - master
 
 jobs:
   run_main:

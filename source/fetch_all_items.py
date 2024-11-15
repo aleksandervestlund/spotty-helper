@@ -1,4 +1,4 @@
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Mapping
 from typing import Any
 
 from spotipy import Spotify
@@ -24,5 +24,5 @@ def get_all_playlist_tracks(
     return _fetch_all_items(sp.playlist_tracks, sp, playlist_id)  # type: ignore
 
 
-def get_all_playlists(user: str, sp: Spotify) -> Sequence[Mapping[str, Any]]:
+def get_all_playlists(user: str, sp: Spotify) -> list[dict[str, Any]]:
     return _fetch_all_items(sp.user_playlists, sp, user)  # type: ignore
