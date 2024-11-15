@@ -3,11 +3,9 @@
 > Created by: Aleksander Thornes Vestlund
 
 This is a helper tool for Spotify, created to help manage playlists.
-The tool is able to remove all duplicates,
-find all songs that have been removed from Spotify, as well as sort playlists based on their comparators.
+The tool is able to remove all duplicates, find all songs that have been removed from Spotify, as well as sort playlists based on their comparators.
 
-> [Sort Your Music](http://sortyourmusic.playlistmachinery.com/index.html) is also a great tool for sorting playlists based on different parameters,
-but it does not support maintaining the `Date added`-field for playlists greater than 100 songs.
+> [Sort Your Music](http://sortyourmusic.playlistmachinery.com/index.html) is also a great tool for sorting playlists based on different parameters, but it does not support maintaining the `Date added`-field for playlists greater than 100 songs.
 
 ## Table of contents
 
@@ -23,14 +21,6 @@ but it does not support maintaining the `Date added`-field for playlists greater
 
 ```bash
 pip install -r requirements.txt`
-```
-
-- Create a `comparators.py` file in the `source`-directory.
-This file should contain a mapping of playlist-names to their respective comparators.
-This can be done by executing the following command:
-
-```bash
-echo "COMPARATORS = {}" > source/comparators.py
 ```
 
 > Use `/` on Unix-like systems and `\` on Windows.
