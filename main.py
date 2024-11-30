@@ -5,7 +5,9 @@ from source.process_playlists import process_playlists
 
 
 def main() -> None:
+    print("Beginning Spotify playlist processing. Authenticating session.")
     sp = get_spotify()
+    print("Authenticated. Retrieving all playlists.")
     playlists = get_all_playlists("aleksander2001", sp)
 
     if comp := set(COMPARATORS) - {playlist["name"] for playlist in playlists}:
