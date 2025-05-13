@@ -10,6 +10,7 @@ COMPARATORS = {
     "big pp": name_artist_id,
     "ferrari": name_artist_id,
     "francis waters": name_artist_id,
+    "grazie mille": name_artist_id,
     "Hvite menn som pusher 50": artist_name_id,
     "juice leaked/unreleased": name_artist_id,
     "juice": name_artist_id,

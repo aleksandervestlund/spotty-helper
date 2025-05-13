@@ -11,6 +11,8 @@ def chunk_list(lst: Sequence[str], n: int = 100) -> list[Sequence[str]]:
 
 
 def remove_unavailable(playlist_id: str, sp: Spotify) -> None:
+    return  # Stopped working and deleted way too many songs
+
     tracks = get_all_playlist_tracks(playlist_id, sp)
     uris: list[str] = []
 
