@@ -1,2 +1,2 @@
-python-dotenv==1.2.1
 spotipy==2.26.0
+python-dotenv==1.2.2
